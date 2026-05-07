@@ -1,7 +1,11 @@
+import Navbar from "@/components/landing/Navbar";
+import Hero from "@/components/landing/Hero";
+
 export default function Home() {
   return (
     <main>
-      <h1>AI Spend Audit</h1>
+      <Navbar />
+      <Hero />
     </main>
   );
 }
