@@ -1,5 +1,14 @@
+"use client";
+
+import { useState } from "react";
+import ToolCard from "./ToolCard";
+
 export default function AuditForm() {
-  return (
+ const [toolCards, setToolCards] = useState([1]);
+ const addToolCard = () => {
+  setToolCards([...toolCards, toolCards.length + 1]);
+};
+ return (
     <section className="mx-auto mt-12 max-w-3xl rounded-2xl border p-8 shadow-sm">
       <h2 className="text-2xl font-bold">
         Audit Your AI Spend
@@ -37,9 +46,17 @@ export default function AuditForm() {
           </select>
         </div>
 
-        <button className="rounded-xl bg-black px-5 py-3 text-white">
+        <button
+  onClick={addToolCard}
+  className="rounded-xl bg-black px-5 py-3 text-white"
+>
           + Add Tool
         </button>
+        <div className="mt-8 space-y-6">
+  {toolCards.map((card) => (
+    <ToolCard key={card} />
+  ))}
+</div>
       </div>
     </section>
   );
