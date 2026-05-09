@@ -2,11 +2,39 @@
 
 import { useState } from "react";
 import ToolCard from "./ToolCard";
-
+import { tools } from "@/constants/tools";
+import { AuditTool } from "@/types/audit";
 export default function AuditForm() {
- const [toolCards, setToolCards] = useState([1]);
- const addToolCard = () => {
-  setToolCards([...toolCards, toolCards.length + 1]);
+ const [toolCards, setToolCards] = useState<
+  AuditTool[]
+>([
+  {
+    toolId: tools[0].id,
+    plan: tools[0].plans[0].name,
+    monthlySpend: "",
+    seats: "",
+  },
+]);
+const updateToolCard = (
+  index: number,
+  updatedCard: AuditTool
+) => {
+  const updatedCards = [...toolCards];
+
+  updatedCards[index] = updatedCard;
+
+  setToolCards(updatedCards);
+};
+const addToolCard = () => {
+  setToolCards([
+    ...toolCards,
+    {
+      toolId: tools[0].id,
+      plan: tools[0].plans[0].name,
+      monthlySpend: "",
+      seats: "",
+    },
+  ]);
 };
  return (
     <section className="mx-auto mt-12 max-w-3xl rounded-2xl border p-8 shadow-sm">
@@ -53,8 +81,15 @@ export default function AuditForm() {
           + Add Tool
         </button>
         <div className="mt-8 space-y-6">
-  {toolCards.map((card) => (
-    <ToolCard key={card} />
+        
+  {toolCards.map((card, index) => (
+    <ToolCard
+  key={index}
+  toolData={card}
+  onUpdate={(updatedCard) =>
+    updateToolCard(index, updatedCard)
+  }
+/>
   ))}
 </div>
       </div>

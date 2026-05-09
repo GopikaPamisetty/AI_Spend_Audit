@@ -1,32 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { tools } from "@/constants/tools";
+import { AuditTool } from "@/types/audit";
 
-export default function ToolCard() {
-  const [selectedToolId, setSelectedToolId] = useState(
-    tools[0].id
-  );
+interface ToolCardProps {
+  toolData: AuditTool;
+  onUpdate: (updatedCard: AuditTool) => void;
+}
+
+export default function ToolCard({
+  toolData,
+  onUpdate,
+}: ToolCardProps) {
 
   const selectedTool = tools.find(
-    (tool) => tool.id === selectedToolId
+    (tool) => tool.id === toolData.toolId
   );
 
-  const [selectedPlan, setSelectedPlan] = useState(
-    selectedTool?.plans[0].name || ""
-  );
-
-  const [monthlySpend, setMonthlySpend] =
-    useState("");
-
-  const [seats, setSeats] = useState("");
   useEffect(() => {
-  if (selectedTool) {
-    setSelectedPlan(
-      selectedTool.plans[0].name
-    );
-  }
-}, [selectedToolId]);
+    if (
+      selectedTool &&
+      !selectedTool.plans.some(
+        (plan) => plan.name === toolData.plan
+      )
+    ) {
+      onUpdate({
+        ...toolData,
+        plan: selectedTool.plans[0].name,
+      });
+    }
+  }, [toolData.toolId]);
 
   return (
     <div className="rounded-xl border p-5">
@@ -42,9 +46,12 @@ export default function ToolCard() {
           </label>
 
           <select
-            value={selectedToolId}
+            value={toolData.toolId}
             onChange={(e) =>
-              setSelectedToolId(e.target.value)
+              onUpdate({
+                ...toolData,
+                toolId: e.target.value,
+              })
             }
             className="w-full rounded-lg border p-3"
           >
@@ -65,9 +72,12 @@ export default function ToolCard() {
           </label>
 
           <select
-            value={selectedPlan}
+            value={toolData.plan}
             onChange={(e) =>
-              setSelectedPlan(e.target.value)
+              onUpdate({
+                ...toolData,
+                plan: e.target.value,
+              })
             }
             className="w-full rounded-lg border p-3"
           >
@@ -89,9 +99,12 @@ export default function ToolCard() {
 
           <input
             type="number"
-            value={monthlySpend}
+            value={toolData.monthlySpend}
             onChange={(e) =>
-              setMonthlySpend(e.target.value)
+              onUpdate({
+                ...toolData,
+                monthlySpend: e.target.value,
+              })
             }
             placeholder="Enter monthly spend"
             className="w-full rounded-lg border p-3"
@@ -105,9 +118,12 @@ export default function ToolCard() {
 
           <input
             type="number"
-            value={seats}
+            value={toolData.seats}
             onChange={(e) =>
-              setSeats(e.target.value)
+              onUpdate({
+                ...toolData,
+                seats: e.target.value,
+              })
             }
             placeholder="Enter number of seats"
             className="w-full rounded-lg border p-3"
