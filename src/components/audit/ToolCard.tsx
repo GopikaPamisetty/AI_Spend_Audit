@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { tools } from "@/constants/tools";
 
 export default function ToolCard() {
@@ -20,6 +20,13 @@ export default function ToolCard() {
     useState("");
 
   const [seats, setSeats] = useState("");
+  useEffect(() => {
+  if (selectedTool) {
+    setSelectedPlan(
+      selectedTool.plans[0].name
+    );
+  }
+}, [selectedToolId]);
 
   return (
     <div className="rounded-xl border p-5">
