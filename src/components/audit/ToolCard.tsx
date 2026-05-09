@@ -12,6 +12,15 @@ export default function ToolCard() {
     (tool) => tool.id === selectedToolId
   );
 
+  const [selectedPlan, setSelectedPlan] = useState(
+    selectedTool?.plans[0].name || ""
+  );
+
+  const [monthlySpend, setMonthlySpend] =
+    useState("");
+
+  const [seats, setSeats] = useState("");
+
   return (
     <div className="rounded-xl border p-5">
       <h3 className="mb-4 text-lg font-semibold">
@@ -48,9 +57,18 @@ export default function ToolCard() {
             Plan
           </label>
 
-          <select className="w-full rounded-lg border p-3">
+          <select
+            value={selectedPlan}
+            onChange={(e) =>
+              setSelectedPlan(e.target.value)
+            }
+            className="w-full rounded-lg border p-3"
+          >
             {selectedTool?.plans.map((plan) => (
-              <option key={plan.name}>
+              <option
+                key={plan.name}
+                value={plan.name}
+              >
                 {plan.name}
               </option>
             ))}
@@ -64,6 +82,10 @@ export default function ToolCard() {
 
           <input
             type="number"
+            value={monthlySpend}
+            onChange={(e) =>
+              setMonthlySpend(e.target.value)
+            }
             placeholder="Enter monthly spend"
             className="w-full rounded-lg border p-3"
           />
@@ -76,6 +98,10 @@ export default function ToolCard() {
 
           <input
             type="number"
+            value={seats}
+            onChange={(e) =>
+              setSeats(e.target.value)
+            }
             placeholder="Enter number of seats"
             className="w-full rounded-lg border p-3"
           />
