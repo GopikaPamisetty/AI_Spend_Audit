@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import ToolCard from "./ToolCard";
 import { tools } from "@/constants/tools";
 import { AuditTool } from "@/types/audit";
+import { Recommendation } from "@/types/recommendation";
+import { generateRecommendations } from "@/lib/auditEngine";
 export default function AuditForm() {
+const [recommendations, setRecommendations] =
+  useState<Recommendation[]>([]);
 const [isLoaded, setIsLoaded] =
   useState(false);
  const [toolCards, setToolCards] = useState<
@@ -21,6 +25,13 @@ const [teamSize, setTeamSize] =
 
 const [useCase, setUseCase] =
   useState("Coding");
+  const runAudit = () => {
+  console.log(toolCards);
+  const results =
+    generateRecommendations(toolCards);
+
+  setRecommendations(results);
+};
 const updateToolCard = (
   index: number,
   updatedCard: AuditTool
@@ -72,6 +83,7 @@ useEffect(() => {
   setIsLoaded(true);
 }, []);
  return (
+ 
     <section className="mx-auto mt-12 max-w-3xl rounded-2xl border p-8 shadow-sm">
       <h2 className="text-2xl font-bold">
         Audit Your AI Spend
@@ -120,7 +132,8 @@ useEffect(() => {
         </div>
 
         <button
-  onClick={addToolCard}
+        onClick={addToolCard}
+  
   className="rounded-xl bg-black px-5 py-3 text-white"
 >
           + Add Tool
@@ -137,7 +150,64 @@ useEffect(() => {
 />
   ))}
 </div>
+<button
+  onClick={runAudit}
+  className="w-full rounded-xl bg-green-600 px-5 py-3 font-medium text-white"
+>
+  Run Free Audit
+</button>
       </div>
+      {recommendations.length > 0 && (
+  <div className="mt-10 space-y-4">
+
+    <h2 className="text-2xl font-bold">
+      Audit Results
+    </h2>
+
+    {recommendations.map(
+      (recommendation, index) => (
+        <div
+          key={index}
+          className="rounded-xl border p-5"
+        >
+
+          <h3 className="text-lg font-semibold">
+            {recommendation.currentTool}
+          </h3>
+
+          <p className="mt-2">
+            Recommended Plan:
+            {" "}
+            <span className="font-medium">
+              {recommendation.recommendedPlan}
+            </span>
+          </p>
+
+          <p className="mt-2">
+            Monthly Savings:
+            {" "}
+            <span className="font-medium text-green-600">
+              ${recommendation.monthlySavings}
+            </span>
+          </p>
+
+          <p className="mt-2">
+            Yearly Savings:
+            {" "}
+            <span className="font-medium text-green-600">
+              ${recommendation.yearlySavings}
+            </span>
+          </p>
+
+          <p className="mt-4 text-gray-600">
+            {recommendation.reason}
+          </p>
+
+        </div>
+      )
+    )}
+  </div>
+)}
     </section>
   );
 }
