@@ -21,6 +21,8 @@ const [isLoaded, setIsLoaded] =
     seats: "",
   },
 ]);
+
+
 const resultsRef =
   useRef<HTMLDivElement | null>(null);
 const [teamSize, setTeamSize] =
@@ -29,6 +31,19 @@ const [teamSize, setTeamSize] =
 const [useCase, setUseCase] =
   useState("Coding");
   
+  const totalMonthlySavings =
+  recommendations.reduce(
+    (total, recommendation) =>
+      total + recommendation.monthlySavings,
+    0
+  );
+
+const totalYearlySavings =
+  recommendations.reduce(
+    (total, recommendation) =>
+      total + recommendation.yearlySavings,
+    0
+  );
   
  const runAudit = () => {
   const results =
@@ -169,6 +184,29 @@ useEffect(() => {
 </button>
       </div>
       {recommendations.length > 0 && (
+      <div className="grid gap-4 md:grid-cols-2">
+
+  <div className="rounded-2xl bg-green-50 p-6">
+    <p className="text-sm font-medium text-green-700">
+      Potential Monthly Savings
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold text-green-800">
+      ${totalMonthlySavings}
+    </h2>
+  </div>
+
+  <div className="rounded-2xl bg-blue-50 p-6">
+    <p className="text-sm font-medium text-blue-700">
+      Potential Yearly Savings
+    </p>
+
+    <h2 className="mt-2 text-4xl font-bold text-blue-800">
+      ${totalYearlySavings}
+    </h2>
+  </div>
+
+</div>
   <div ref={resultsRef} className="mt-10 space-y-4">
 
     <h2 className="text-2xl font-bold">
