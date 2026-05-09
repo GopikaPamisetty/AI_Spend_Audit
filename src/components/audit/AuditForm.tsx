@@ -1,10 +1,11 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ToolCard from "./ToolCard";
 import { tools } from "@/constants/tools";
 import { AuditTool } from "@/types/audit";
 export default function AuditForm() {
+const [isLoaded, setIsLoaded] =
+  useState(false);
  const [toolCards, setToolCards] = useState<
   AuditTool[]
 >([
@@ -15,6 +16,11 @@ export default function AuditForm() {
     seats: "",
   },
 ]);
+const [teamSize, setTeamSize] =
+  useState("");
+
+const [useCase, setUseCase] =
+  useState("Coding");
 const updateToolCard = (
   index: number,
   updatedCard: AuditTool
@@ -36,6 +42,35 @@ const addToolCard = () => {
     },
   ]);
 };
+useEffect(() => {
+  if (!isLoaded) return;
+
+  localStorage.setItem(
+    "audit-form-data",
+    JSON.stringify({
+      toolCards,
+      teamSize,
+      useCase,
+    })
+  );
+}, [toolCards, teamSize, useCase, isLoaded]);
+useEffect(() => {
+  const savedData = localStorage.getItem(
+    "audit-form-data"
+  );
+
+  if (savedData) {
+    const parsedData = JSON.parse(savedData);
+
+    setToolCards(parsedData.toolCards || []);
+
+    setTeamSize(parsedData.teamSize || "");
+
+    setUseCase(parsedData.useCase || "Coding");
+  }
+
+  setIsLoaded(true);
+}, []);
  return (
     <section className="mx-auto mt-12 max-w-3xl rounded-2xl border p-8 shadow-sm">
       <h2 className="text-2xl font-bold">
@@ -54,10 +89,14 @@ const addToolCard = () => {
           </label>
 
           <input
-            type="number"
-            placeholder="Enter team size"
-            className="w-full rounded-lg border p-3"
-          />
+  type="number"
+  value={teamSize}
+  onChange={(e) =>
+    setTeamSize(e.target.value)
+  }
+  placeholder="Enter team size"
+  className="w-full rounded-lg border p-3"
+/>
         </div>
 
         <div>
@@ -65,13 +104,19 @@ const addToolCard = () => {
             Primary Use Case
           </label>
 
-          <select className="w-full rounded-lg border p-3">
-            <option>Coding</option>
-            <option>Writing</option>
-            <option>Research</option>
-            <option>Data</option>
-            <option>Mixed</option>
-          </select>
+          <select
+  value={useCase}
+  onChange={(e) =>
+    setUseCase(e.target.value)
+  }
+  className="w-full rounded-lg border p-3"
+>
+  <option>Coding</option>
+  <option>Writing</option>
+  <option>Research</option>
+  <option>Data</option>
+  <option>Mixed</option>
+</select>
         </div>
 
         <button
