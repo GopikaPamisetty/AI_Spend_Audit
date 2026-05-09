@@ -16,7 +16,14 @@ export function generateRecommendations(
       Number(tool.seats) <= 2
     ) {
 
-      const monthlySavings = 20;
+      
+      const currentSpend =
+  Number(tool.monthlySpend);
+
+const recommendedPrice = 20;
+
+const monthlySavings =
+  currentSpend - recommendedPrice;
 
       recommendations.push({
         currentTool: "Cursor Teams",

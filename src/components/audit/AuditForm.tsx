@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import ToolCard from "./ToolCard";
 import { tools } from "@/constants/tools";
 import { AuditTool } from "@/types/audit";
 import { Recommendation } from "@/types/recommendation";
 import { generateRecommendations } from "@/lib/auditEngine";
+
 export default function AuditForm() {
 const [recommendations, setRecommendations] =
   useState<Recommendation[]>([]);
@@ -20,18 +21,28 @@ const [isLoaded, setIsLoaded] =
     seats: "",
   },
 ]);
+const resultsRef =
+  useRef<HTMLDivElement | null>(null);
 const [teamSize, setTeamSize] =
   useState("");
 
 const [useCase, setUseCase] =
   useState("Coding");
-  const runAudit = () => {
-  console.log(toolCards);
+  
+  
+ const runAudit = () => {
   const results =
     generateRecommendations(toolCards);
 
   setRecommendations(results);
+
+  setTimeout(() => {
+    resultsRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, 100);
 };
+
 const updateToolCard = (
   index: number,
   updatedCard: AuditTool
@@ -158,7 +169,7 @@ useEffect(() => {
 </button>
       </div>
       {recommendations.length > 0 && (
-  <div className="mt-10 space-y-4">
+  <div ref={resultsRef} className="mt-10 space-y-4">
 
     <h2 className="text-2xl font-bold">
       Audit Results
