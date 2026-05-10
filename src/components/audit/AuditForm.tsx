@@ -407,7 +407,17 @@ export default function AuditForm() {
           )}
 
           <div className="space-y-4">
+<div className="rounded-2xl border bg-white p-6 shadow-sm">
 
+  <h2 className="text-2xl font-bold">
+    AI Audit Summary
+  </h2>
+
+  <p className="mt-4 leading-7 text-gray-700">
+    {summary}
+  </p>
+
+</div>
             <h2 className="text-2xl font-bold">
               Audit Results
             </h2>
