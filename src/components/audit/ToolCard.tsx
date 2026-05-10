@@ -17,7 +17,15 @@ export default function ToolCard({
   const selectedTool = tools.find(
     (tool) => tool.id === toolData.toolId
   );
+const selectedPlanData =
+  selectedTool?.plans.find(
+    (plan) =>
+      plan.name === toolData.plan
+  );
 
+const expectedMonthlyCost =
+  (selectedPlanData?.monthlyPrice || 0) *
+  Number(toolData.seats || 0);
   useEffect(() => {
     if (
       selectedTool &&
@@ -96,6 +104,13 @@ export default function ToolCard({
           <label className="mb-2 block font-medium">
             Monthly Spend ($)
           </label>
+          <p className="mt-2 text-sm text-gray-500">
+  Expected Monthly Cost:
+  {" "}
+  <span className="font-medium">
+    ${expectedMonthlyCost}
+  </span>
+</p>
 
           <input
             type="number"

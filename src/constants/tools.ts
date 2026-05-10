@@ -48,21 +48,25 @@ export const tools: Tool[] = [
       {
         name: "Hobby",
         monthlyPrice: 0,
+        price: 0,
       },
 
       {
         name: "Pro",
         monthlyPrice: 20,
+        price: 20,
       },
 
       {
         name: "Teams",
         monthlyPrice: 40,
+        price: 40,
       },
 
       {
         name: "Enterprise",
         monthlyPrice: null,
+        price: 60,
       },
     ],
   },

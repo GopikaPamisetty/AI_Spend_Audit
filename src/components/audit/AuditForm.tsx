@@ -15,13 +15,17 @@ import { AuditTool } from "@/types/audit";
 import { Recommendation } from "@/types/recommendation";
 
 import { generateRecommendations } from "@/lib/auditEngine";
-
+import { generateSummary } from "@/lib/generateSummary";
 export default function AuditForm() {
 
   const [
     recommendations,
     setRecommendations,
   ] = useState<Recommendation[]>([]);
+  const [summary, setSummary] =
+  useState("");
+  const [error, setError] =
+  useState("");
 
   const [isLoaded, setIsLoaded] =
     useState(false);
@@ -67,21 +71,69 @@ export default function AuditForm() {
   const isOptimized =
     totalMonthlySavings === 0;
 
+  
   const runAudit = () => {
 
-    const results =
-      generateRecommendations(
-        toolCards
+  setError("");
+
+  for (const tool of toolCards) {
+
+    if (
+      !tool.monthlySpend ||
+      Number(tool.monthlySpend) < 0
+    ) {
+
+      setError(
+        "Please enter a valid monthly spend amount."
       );
 
-    setRecommendations(results);
+      return;
+    }
 
-    setTimeout(() => {
-      resultsRef.current?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }, 100);
-  };
+    if (
+      !tool.seats ||
+      Number(tool.seats) <= 0
+    ) {
+
+      setError(
+        "Please enter a valid number of seats."
+      );
+
+      return;
+      }
+       
+  }
+
+  const results =
+    generateRecommendations(
+      toolCards
+    );
+
+  setRecommendations(results);
+
+  const calculatedMonthlySavings =
+    results.reduce(
+      (total, recommendation) =>
+        total +
+        recommendation.monthlySavings,
+      0
+    );
+
+    const generatedSummary =
+    generateSummary(
+      results,
+      calculatedMonthlySavings
+    );
+
+  setSummary(generatedSummary);
+
+  setTimeout(() => {
+    resultsRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, 100);
+};
+
 
   const updateToolCard = (
     index: number,
@@ -268,6 +320,11 @@ export default function AuditForm() {
         >
           Run Free Audit
         </button>
+        {error && (
+  <p className="mt-3 text-sm font-medium text-red-600">
+    {error}
+  </p>
+)}
 
       </div>
 

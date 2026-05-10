@@ -14,7 +14,8 @@ function getPlanPrice(
     (plan) => plan.name === planName
   );
 
-  return plan?.price || 0;
+  
+  return plan?.monthlyPrice || 0;
 }
 
 export function generateRecommendations(
@@ -62,6 +63,7 @@ export function generateRecommendations(
       tool.toolId === "chatgpt" &&
       tool.plan === "Team" &&
       Number(tool.seats) <= 2
+      
     ) {
 
       const currentSpend =
