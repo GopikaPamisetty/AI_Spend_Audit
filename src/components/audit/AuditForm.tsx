@@ -24,6 +24,14 @@ export default function AuditForm() {
   ] = useState<Recommendation[]>([]);
   const [summary, setSummary] =
   useState("");
+  const [email, setEmail] =
+  useState("");
+
+const [company, setCompany] =
+  useState("");
+
+const [role, setRole] =
+  useState("");
   const [error, setError] =
   useState("");
 
@@ -327,6 +335,7 @@ export default function AuditForm() {
 )}
 
       </div>
+      
 
       {recommendations.length > 0 && (
 
@@ -405,6 +414,57 @@ export default function AuditForm() {
 
             </div>
           )}
+          <div className="rounded-2xl border bg-gray-50 p-6">
+
+  <h2 className="text-2xl font-bold">
+    Get Full Audit Report
+  </h2>
+
+  <p className="mt-2 text-gray-600">
+    Receive your personalized AI spend audit report and future optimization recommendations.
+  </p>
+
+  <div className="mt-6 space-y-4">
+
+    <input
+      type="email"
+      value={email}
+      onChange={(e) =>
+        setEmail(e.target.value)
+      }
+      placeholder="Email Address"
+      className="w-full rounded-lg border p-3"
+    />
+
+    <input
+      type="text"
+      value={company}
+      onChange={(e) =>
+        setCompany(e.target.value)
+      }
+      placeholder="Company Name (Optional)"
+      className="w-full rounded-lg border p-3"
+    />
+
+    <input
+      type="text"
+      value={role}
+      onChange={(e) =>
+        setRole(e.target.value)
+      }
+      placeholder="Role (Optional)"
+      className="w-full rounded-lg border p-3"
+    />
+
+    <button
+      className="w-full rounded-xl bg-black px-5 py-3 font-medium text-white"
+    >
+      Send My Report
+    </button>
+
+  </div>
+
+</div>
 
           <div className="space-y-4">
 <div className="rounded-2xl border bg-white p-6 shadow-sm">
