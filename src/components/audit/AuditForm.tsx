@@ -146,6 +146,8 @@ const router = useRouter();
   }, 100);
 };
 
+const [website, setWebsite] =
+  useState("");
 
   const updateToolCard = (
     index: number,
@@ -235,6 +237,14 @@ const router = useRouter();
 
 }, []);
   const saveLead = async () => {
+  if (website) {
+
+  alert(
+    "Spam detected."
+  );
+
+  return;
+}
 
   if (!email) {
 
@@ -314,6 +324,7 @@ router.push(
   `/report/${data.id}`
 );
 };
+
 
   return (
 
@@ -414,6 +425,21 @@ router.push(
           )}
 
         </div>
+        <div className="hidden">
+
+  <label>
+    Website
+  </label>
+
+  <input
+    type="text"
+    value={website}
+    onChange={(e) =>
+      setWebsite(e.target.value)
+    }
+  />
+
+</div>
 
         <button
           onClick={runAudit}
