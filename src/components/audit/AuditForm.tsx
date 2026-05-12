@@ -17,7 +17,7 @@ import { AuditTool } from "@/types/audit";
 import { Recommendation } from "@/types/recommendation";
 
 import { generateRecommendations } from "@/lib/auditEngine";
-import { generateSummary } from "@/lib/generateSummary";
+
 export default function AuditForm() {
 
   const [
