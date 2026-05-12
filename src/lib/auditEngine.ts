@@ -6,6 +6,7 @@ function getPlanPrice(
   toolId: string,
   planName: string
 ) {
+
   const tool = tools.find(
     (tool) => tool.id === toolId
   );
@@ -14,7 +15,6 @@ function getPlanPrice(
     (plan) => plan.name === planName
   );
 
-  
   return plan?.monthlyPrice || 0;
 }
 
@@ -26,27 +26,65 @@ export function generateRecommendations(
 
   auditTools.forEach((tool) => {
 
-    // Cursor Rule
+    const currentSpend =
+      Number(tool.monthlySpend);
+
+    const seats =
+      Number(tool.seats);
+
+    // -----------------------------------
+    // FREE PLAN OVESPEND RULE
+    // -----------------------------------
+
+    if (
+      tool.plan === "Free" &&
+      currentSpend > 0
+    ) {
+
+      recommendations.push({
+        currentTool:
+          `${tool.toolId.toUpperCase()} Free`,
+
+        recommendedPlan:
+          "Review Billing Setup",
+
+        monthlySavings:
+          currentSpend,
+
+        yearlySavings:
+          currentSpend * 12,
+
+        reason:
+          "A free-tier plan should not generate recurring monthly costs. You may be paying for duplicate subscriptions, API usage, or inactive tooling.",
+      });
+    }
+
+    // -----------------------------------
+    // CURSOR RULE
+    // -----------------------------------
+
     if (
       tool.toolId === "cursor" &&
       tool.plan === "Teams" &&
-      Number(tool.seats) <= 2
+      seats <= 2
     ) {
 
-      const currentSpend =
-        Number(tool.monthlySpend);
-
       const recommendedPrice =
-        getPlanPrice("cursor", "Pro") *
-        Number(tool.seats);
+        getPlanPrice(
+          "cursor",
+          "Pro"
+        ) * seats;
 
       const monthlySavings =
-        currentSpend - recommendedPrice;
+        currentSpend -
+        recommendedPrice;
 
       recommendations.push({
-        currentTool: "Cursor Teams",
+        currentTool:
+          "Cursor Teams",
 
-        recommendedPlan: "Cursor Pro",
+        recommendedPlan:
+          "Cursor Pro",
 
         monthlySavings,
 
@@ -58,28 +96,32 @@ export function generateRecommendations(
       });
     }
 
-    // ChatGPT Rule
+    // -----------------------------------
+    // CHATGPT RULE
+    // -----------------------------------
+
     if (
       tool.toolId === "chatgpt" &&
       tool.plan === "Team" &&
-      Number(tool.seats) <= 2
-      
+      seats <= 2
     ) {
 
-      const currentSpend =
-        Number(tool.monthlySpend);
-
       const recommendedPrice =
-        getPlanPrice("chatgpt", "Plus") *
-        Number(tool.seats);
+        getPlanPrice(
+          "chatgpt",
+          "Plus"
+        ) * seats;
 
       const monthlySavings =
-        currentSpend - recommendedPrice;
+        currentSpend -
+        recommendedPrice;
 
       recommendations.push({
-        currentTool: "ChatGPT Team",
+        currentTool:
+          "ChatGPT Team",
 
-        recommendedPlan: "ChatGPT Plus",
+        recommendedPlan:
+          "ChatGPT Plus",
 
         monthlySavings,
 
@@ -91,26 +133,32 @@ export function generateRecommendations(
       });
     }
 
-    // Gemini Rule
+    // -----------------------------------
+    // GEMINI RULE
+    // -----------------------------------
+
     if (
       tool.toolId === "gemini" &&
       tool.plan === "Ultra" &&
-      Number(tool.seats) <= 1
+      seats <= 1
     ) {
 
-      const currentSpend =
-        Number(tool.monthlySpend);
-
       const recommendedPrice =
-        getPlanPrice("gemini", "Pro");
+        getPlanPrice(
+          "gemini",
+          "Pro"
+        );
 
       const monthlySavings =
-        currentSpend - recommendedPrice;
+        currentSpend -
+        recommendedPrice;
 
       recommendations.push({
-        currentTool: "Gemini Ultra",
+        currentTool:
+          "Gemini Ultra",
 
-        recommendedPlan: "Gemini Pro",
+        recommendedPlan:
+          "Gemini Pro",
 
         monthlySavings,
 
@@ -124,11 +172,20 @@ export function generateRecommendations(
 
   });
 
-  if (recommendations.length === 0) {
-    recommendations.push({
-      currentTool: "Optimized Stack",
+  // -----------------------------------
+  // OPTIMIZED STATE
+  // -----------------------------------
 
-      recommendedPlan: "No Changes Needed",
+  if (
+    recommendations.length === 0
+  ) {
+
+    recommendations.push({
+      currentTool:
+        "Optimized Stack",
+
+      recommendedPlan:
+        "No Changes Needed",
 
       monthlySavings: 0,
 

@@ -1,5 +1,6 @@
 "use client";
-
+import { supabase }
+from "@/lib/supabase";
 import {
   useEffect,
   useRef,
@@ -34,6 +35,8 @@ const [role, setRole] =
   useState("");
   const [error, setError] =
   useState("");
+  const [isSaving, setIsSaving] =
+  useState(false);
 
   const [isLoaded, setIsLoaded] =
     useState(false);
@@ -221,6 +224,68 @@ const [role, setRole] =
     setIsLoaded(true);
 
   }, []);
+  const saveLead = async () => {
+
+  if (!email) {
+    alert("Please enter email");
+    return;
+  }
+
+  setIsSaving(true);
+
+  const totalMonthlySavings =
+    recommendations.reduce(
+      (total, recommendation) =>
+        total +
+        recommendation.monthlySavings,
+      0
+    );
+
+  const totalYearlySavings =
+    recommendations.reduce(
+      (total, recommendation) =>
+        total +
+        recommendation.yearlySavings,
+      0
+    );
+
+  const {data, error } =
+    await supabase
+      .from("leads")
+      .insert([
+        {
+          email,
+          company,
+          role,
+          team_size:
+            Number(teamSize),
+          use_case: useCase,
+          audit_data: toolCards,
+          total_monthly_savings:
+            totalMonthlySavings,
+          total_yearly_savings:
+            totalYearlySavings,
+        },
+      ]);
+
+  setIsSaving(false);
+
+  if (error !== null) { 
+
+    console.log(data);
+	console.error(error);
+
+    alert(
+      "Failed to save report."
+    );
+
+    return;
+  }
+
+  alert(
+    "Audit report saved successfully!"
+  );
+};
 
   return (
 
@@ -293,12 +358,12 @@ const [role, setRole] =
           </select>
         </div>
 
-        <button
-          onClick={addToolCard}
-          className="rounded-xl bg-black px-5 py-3 text-white"
-        >
-          + Add Tool
-        </button>
+       <button
+  onClick={addToolCard}
+  className="rounded-xl bg-black px-5 py-3 text-white"
+>
+  + Add Tool
+</button>
 
         <div className="mt-8 space-y-6">
 
@@ -456,11 +521,15 @@ const [role, setRole] =
       className="w-full rounded-lg border p-3"
     />
 
-    <button
-      className="w-full rounded-xl bg-black px-5 py-3 font-medium text-white"
-    >
-      Send My Report
-    </button>
+   <button
+  onClick={saveLead}
+  disabled={isSaving}
+  className="w-full rounded-xl bg-black px-5 py-3 font-medium text-white disabled:opacity-50"
+>
+  {isSaving
+    ? "Saving..."
+    : "Send My Report"}
+</button>
 
   </div>
 
