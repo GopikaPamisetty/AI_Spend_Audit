@@ -6,7 +6,8 @@ import {
   useRef,
   useState,
 } from "react";
-
+import { useRouter }
+from "next/navigation";
 import ToolCard from "./ToolCard";
 
 import { tools } from "@/constants/tools";
@@ -40,7 +41,7 @@ const [role, setRole] =
 
   const [isLoaded, setIsLoaded] =
     useState(false);
-
+const router = useRouter();
   const [toolCards, setToolCards] =
     useState<AuditTool[]>([
       {
@@ -227,9 +228,13 @@ const [role, setRole] =
   const saveLead = async () => {
 
   if (!email) {
-    alert("Please enter email");
-    return;
-  }
+
+  alert(
+    "Please enter email"
+  );
+
+  return;
+}
 
   setIsSaving(true);
 
@@ -253,38 +258,52 @@ const [role, setRole] =
     await supabase
       .from("leads")
       .insert([
-        {
-          email,
-          company,
-          role,
-          team_size:
-            Number(teamSize),
-          use_case: useCase,
-          audit_data: toolCards,
-          total_monthly_savings:
-            totalMonthlySavings,
-          total_yearly_savings:
-            totalYearlySavings,
-        },
-      ]);
+  {
+    email,
+    company,
+    role,
+    team_size:
+      Number(teamSize),
+    use_case: useCase,
+    audit_data: toolCards,
+    total_monthly_savings:
+      totalMonthlySavings,
+    total_yearly_savings:
+      totalYearlySavings,
+  },
+])
+.select()
+.single();
 
   setIsSaving(false);
 
-  if (error !== null) { 
+ if (error) {
 
-    console.log(data);
-	console.error(error);
-
-    alert(
-      "Failed to save report."
-    );
-
-    return;
-  }
+  console.error(error);
 
   alert(
-    "Audit report saved successfully!"
+    "Failed to save report."
   );
+
+  return;
+}
+
+if (!data) {
+
+  alert(
+    "No report data returned."
+  );
+
+  return;
+}
+
+alert(
+  "Audit report saved successfully!"
+);
+
+router.push(
+  `/report/${data.id}`
+);
 };
 
   return (
