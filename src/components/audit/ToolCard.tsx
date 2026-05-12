@@ -38,8 +38,12 @@ const expectedMonthlyCost =
         plan: selectedTool.plans[0].name,
       });
     }
-  }, [toolData.toolId]);
-
+  
+}, [
+  selectedTool,
+  toolData,
+  onUpdate,
+]);
   return (
     <div className="rounded-xl border p-5">
       <h3 className="mb-4 text-lg font-semibold">

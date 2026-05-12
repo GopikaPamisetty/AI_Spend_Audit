@@ -196,35 +196,44 @@ const router = useRouter();
     isLoaded,
   ]);
 
-  useEffect(() => {
+ useEffect(() => {
 
-    const savedData =
-      localStorage.getItem(
-        "audit-form-data"
-      );
+  const savedData =
+    localStorage.getItem(
+      "audit-form-data"
+    );
 
-    if (savedData) {
+ if (!savedData) {
 
-      const parsedData =
-        JSON.parse(savedData);
+  Promise.resolve().then(() => {
+    setIsLoaded(true);
+  });
 
-      setToolCards(
-        parsedData.toolCards || []
-      );
+  return;
+}
 
-      setTeamSize(
-        parsedData.teamSize || ""
-      );
+  const parsedData =
+    JSON.parse(savedData);
 
-      setUseCase(
-        parsedData.useCase ||
-          "Coding"
-      );
-    }
+  Promise.resolve().then(() => {
+
+    setToolCards(
+      parsedData.toolCards || []
+    );
+
+    setTeamSize(
+      parsedData.teamSize || ""
+    );
+
+    setUseCase(
+      parsedData.useCase || "Coding"
+    );
 
     setIsLoaded(true);
 
-  }, []);
+  });
+
+}, []);
   const saveLead = async () => {
 
   if (!email) {
