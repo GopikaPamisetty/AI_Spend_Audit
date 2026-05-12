@@ -57,7 +57,55 @@ export function generateRecommendations(
         reason:
           "A free-tier plan should not generate recurring monthly costs. You may be paying for duplicate subscriptions, API usage, or inactive tooling.",
       });
-    }
+    }// -----------------------------------
+// GENERIC OVESPEND RULE
+// -----------------------------------
+
+const expectedCost =
+  getPlanPrice(
+    tool.toolId,
+    tool.plan
+  ) * Math.max(seats, 1);
+
+if (
+
+  // Normal overspending
+  (
+    expectedCost > 0 &&
+    currentSpend >
+      expectedCost * 1.2
+  )
+
+  ||
+
+  // Enterprise/custom suspicious spend
+  (
+    expectedCost === 0 &&
+    currentSpend > 500
+  )
+
+) {
+
+  const monthlySavings =
+    currentSpend -
+    expectedCost;
+
+  recommendations.push({
+    currentTool:
+      `${tool.toolId.toUpperCase()} ${tool.plan}`,
+
+    recommendedPlan:
+  "Billing Review Recommended",
+
+    monthlySavings,
+
+    yearlySavings:
+      monthlySavings * 12,
+
+    reason:
+      `Your reported spend is significantly higher than the expected pricing for the ${tool.plan} plan. This may indicate duplicate subscriptions, incorrect billing, inactive seats, or unnecessary API usage.`,
+  });
+}
 
     // -----------------------------------
     // CURSOR RULE
