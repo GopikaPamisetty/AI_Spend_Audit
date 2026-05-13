@@ -229,7 +229,8 @@ A complete application also requires:
 * documentation,
 * backend infrastructure,
 * and product reasoning.
-
+ 
+ 
 This project provided practical exposure to the full software development lifecycle.
 
 ---
