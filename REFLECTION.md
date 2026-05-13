@@ -233,6 +233,11 @@ A complete application also requires:
 This project provided practical exposure to the full software development lifecycle.
 
 ---
+## Deferred Features
+
+Transactional email delivery using Resend was planned for the MVP but deferred due to time constraints near submission. The backend structure and lead capture flow were designed to support future email inte
+gration cleanly.
+---
 
 # Final Thoughts
 
