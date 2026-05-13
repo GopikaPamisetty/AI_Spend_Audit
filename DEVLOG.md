@@ -2,295 +2,204 @@
 
 # AI Spend Audit – Development Log
 
-## Project Overview
+---
 
-AI Spend Audit is a SaaS-style web application designed to help users analyze AI tooling expenses and identify cost optimization opportunities.
+## Day 1 — 2026-05-06
 
-The project evolved from a simple calculator into a full-stack deployed platform with:
+**Hours worked:** 4
 
-* Dynamic audits
-* Recommendation engine
-* Persistent reports
-* CI/CD automation
-* Public shareable URLs
+**What I did:**
+- Read the complete Credex assignment carefully
+- Planned the application architecture
+- Chose Next.js + TypeScript + Tailwind CSS + Supabase stack
+- Initialized the Next.js project
+- Configured Tailwind CSS
+- Created the GitHub repository
+- Set up initial folder structure
+
+**What I learned:**
+- The assignment focuses more on shipping a real product than solving isolated coding problems
+- Product thinking and documentation are equally important as code quality
+- Planning architecture early reduces later refactoring
+
+**Blockers / what I'm stuck on:**
+- Initially unsure how detailed the audit logic should be
+- Needed to research current AI tool pricing models
+
+**Plan for tomorrow:**
+- Build the pricing configuration system
+- Start implementing the recommendation engine
 
 ---
 
-# Day 1 – Project Planning & Setup
+## Day 2 — 2026-05-07
 
-## Goals
+**Hours worked:** 5
 
-* Understand assignment requirements
-* Select technology stack
-* Initialize project
+**What I did:**
+- Created centralized pricing configuration
+- Added supported AI tools and plans
+- Built the recommendation engine
+- Implemented savings calculation logic
+- Added optimized-state handling
+- Added downgrade recommendation rules
 
-## Decisions Made
+**What I learned:**
+- Hardcoded deterministic logic is more reliable than AI-generated financial calculations
+- Centralized pricing data makes maintenance much easier
+- Rule-based systems are easier to debug and test
 
-Chosen stack:
+**Blockers / what I'm stuck on:**
+- Balancing realistic pricing logic while keeping implementation simple
+- Needed to normalize plan naming across vendors
 
-* Next.js
-* TypeScript
-* Tailwind CSS
-* Supabase
-* Vercel
-
-## Initial Work
-
-* Created Next.js application
-* Configured TypeScript
-* Installed dependencies
-* Set up Tailwind CSS
-* Created GitHub repository
-
----
-
-# Day 2 – Audit Engine Development
-
-## Goals
-
-* Build recommendation engine
-* Design pricing model
-* Implement savings calculations
-
-## Work Completed
-
-* Created centralized tools configuration
-* Added pricing plans
-* Built audit recommendation logic
-* Implemented savings calculations
-* Added optimized-state handling
-
-## Challenges
-
-Balancing realistic pricing logic while keeping the rule engine simple and deterministic.
+**Plan for tomorrow:**
+- Build dynamic frontend UI
+- Add multiple tool support
+- Improve audit experience
 
 ---
 
-# Day 3 – Dynamic UI Development
+## Day 3 — 2026-05-08
 
-## Goals
+**Hours worked:** 6
 
-* Build interactive audit experience
-* Add multiple tool support
-* Improve user experience
+**What I did:**
+- Built the AuditForm component
+- Created reusable ToolCard component
+- Added dynamic “Add Tool” functionality
+- Implemented form validation
+- Added localStorage persistence
+- Added smooth scrolling to results section
+- Improved mobile responsiveness
 
-## Work Completed
+**What I learned:**
+- Dynamic React forms become difficult to manage without clean state updates
+- Small UX improvements significantly improve perceived quality
+- Validation improves trustworthiness of recommendations
 
-* Created ToolCard component
-* Added dynamic tool creation
-* Implemented form validation
-* Added localStorage persistence
-* Implemented smooth scrolling
+**Blockers / what I'm stuck on:**
+- Faced issues updating nested tool state correctly
+- Needed multiple iterations to stabilize dynamic rendering
 
-## UX Improvements
-
-* Clear savings display
-* Optimized-state messaging
-* High-savings callouts
-
----
-
-# Day 4 – Backend Integration
-
-## Goals
-
-* Persist reports
-* Build public report pages
-* Connect database
-
-## Work Completed
-
-* Created Supabase project
-* Designed leads table schema
-* Integrated Supabase client
-* Implemented report saving
-* Built dynamic report routes
-
-## Challenges
-
-Resolved:
-
-* Supabase permission issues
-* Row-level access problems
-* Insert authorization errors
+**Plan for tomorrow:**
+- Integrate Supabase backend
+- Add report persistence
+- Build shareable report URLs
 
 ---
 
-# Day 5 – Production Readiness
+## Day 4 — 2026-05-09
 
-## Goals
+**Hours worked:** 5
 
-* Add testing
-* Configure CI/CD
-* Deploy application
+**What I did:**
+- Created Supabase project
+- Designed leads database schema
+- Connected frontend to Supabase
+- Implemented lead capture
+- Added report saving functionality
+- Built dynamic public report pages
+- Added unique shareable report URLs
 
-## Work Completed
+**What I learned:**
+- Backend integration introduces many edge cases around null values and permissions
+- Public shareable URLs make the product feel significantly more realistic
+- Row-level security configuration is critical in Supabase
 
-* Added Vitest tests
-* Configured GitHub Actions
-* Fixed lint issues
-* Added Open Graph metadata
-* Implemented honeypot spam protection
-* Deployed application to Vercel
+**Blockers / what I'm stuck on:**
+- Faced Supabase insert permission errors
+- Had issues retrieving inserted rows after save operations
 
-## CI/CD
-
-Automated pipeline now validates:
-
-* ESLint
-* Unit tests
-
-on every push.
-
----
-
-# Technical Challenges Faced
-
-## React Hook Lint Issues
-
-React 19 introduced stricter linting around:
-
-```text id="dl1"
-setState inside effects
-```
-
-Solution:
-
-* Refactored effects
-* Deferred updates using Promise.resolve()
+**Plan for tomorrow:**
+- Add tests
+- Configure CI/CD pipeline
+- Deploy application
 
 ---
 
-## Alias Import Issues
+## Day 5 — 2026-05-10
 
-Vitest initially failed to resolve:
+**Hours worked:** 6
 
-```text id="dl2"
-@
-```
+**What I did:**
+- Added Vitest testing setup
+- Wrote audit engine tests
+- Configured GitHub Actions CI workflow
+- Fixed ESLint issues
+- Added honeypot spam protection
+- Added Open Graph metadata
+- Deployed application to Vercel
 
-imports.
+**What I learned:**
+- CI/CD pipelines quickly expose issues missed during local development
+- TypeScript catches deployment-time bugs before production
+- Automated testing improves confidence while refactoring
 
-Solution:
+**Blockers / what I'm stuck on:**
+- Vitest initially failed to resolve alias imports
+- Deployment failed because of invalid TypeScript schema fields
 
-* Switched to relative imports inside tests
-
----
-
-## TypeScript Schema Errors
-
-Deployment failed because:
-
-```text id="dl3"
-price
-```
-
-field did not exist in the Plan interface.
-
-Solution:
-
-* Removed invalid properties
-* Standardized pricing schema
+**Plan for tomorrow:**
+- Improve audit summaries
+- Refine recommendation messaging
+- Polish UI and documentation
 
 ---
 
-## Supabase Permissions
+## Day 6 — 2026-05-11
 
-Insert operations initially failed due to:
+**Hours worked:** 5
 
-* missing table privileges
-* anonymous role restrictions
+**What I did:**
+- Improved recommendation quality
+- Added AI-style audit summary generation
+- Improved optimized-state messaging
+- Added high-savings callout sections
+- Fixed React Hook linting issues
+- Stabilized report rendering
+- Improved error handling
 
-Solution:
+**What I learned:**
+- Honest “no savings found” messaging improves product credibility
+- React 19 lint rules are stricter around effect state updates
+- Clear messaging is just as important as accurate calculations
 
-* Granted insert permissions
-* Verified public access behavior
+**Blockers / what I'm stuck on:**
+- Initially attempted browser-side OpenAI integration which caused security/runtime issues
+- Had to redesign summary generation strategy
 
----
-
-# Product Decisions
-
-## Why Rule-Based Recommendations?
-
-Advantages:
-
-* Fast implementation
-* Predictable outputs
-* Easier debugging
-* No dependency on external AI APIs
-
-Tradeoff:
-
-* Less personalized than true LLM-generated analysis
+**Plan for tomorrow:**
+- Finish documentation
+- Review assignment requirements line-by-line
+- Finalize production readiness
 
 ---
 
-## Why Public Reports?
+## Day 7 — 2026-05-12
 
-Public URLs improve:
+**Hours worked:** 6
 
-* Shareability
-* Virality potential
-* Product realism
-* SaaS-style behavior
+**What I did:**
+- Reviewed assignment requirements carefully
+- Completed README documentation
+- Wrote architecture explanation
+- Added GTM and economics analysis
+- Completed metrics documentation
+- Improved landing page copy
+- Performed final UI polish
+- Verified deployment functionality
+- Finalized repository structure
 
----
+**What I learned:**
+- Documentation quality strongly affects perceived engineering maturity
+- Product positioning matters even for technical projects
+- Small deployment issues can consume significant debugging time
 
-# Lessons Learned
+**Blockers / what I'm stuck on:**
+- Needed to reorganize documentation multiple times to match exact assignment requirements
+- Lighthouse optimization still requires additional future improvements
 
-## Engineering Lessons
-
-* CI/CD catches issues missed locally
-* TypeScript improves deployment reliability
-* Production deployments reveal hidden bugs
-
-## Product Lessons
-
-* Small UX improvements matter significantly
-* Clear savings visualization improves usability
-* Honest “optimized” states increase credibility
-
----
-
-# What Went Well
-
-Successful outcomes:
-
-* Full-stack deployment completed
-* Automated tests implemented
-* CI pipeline working
-* Dynamic reports functioning
-* Supabase integration stable
-
----
-
-# What Could Be Improved
-
-Future improvements:
-
-* Real LLM-generated summaries
-* Authentication system
-* Team collaboration features
-* PDF exports
-* Advanced analytics
-* Usage-based recommendations
-
----
-
-# Final Reflection
-
-The project evolved significantly beyond the original minimum requirements.
-
-It became:
-
-* a production-deployed application,
-* a tested engineering system,
-* and a realistic SaaS-style product prototype.
-
-The development process provided valuable experience in:
-
-* full-stack engineering,
-* deployment workflows,
-* CI/CD automation,
-* debugging,
-* and product-oriented decision making.
+**Plan for tomorrow:**
+- Submit assignment
+- Prepare for potential Round 2 interview/build task
