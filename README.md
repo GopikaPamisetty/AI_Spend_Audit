@@ -252,12 +252,64 @@ A hidden honeypot field blocks automated spam submissions.
 
 # Screenshots
 
-Potential screenshots to include:
+## Landing Page
 
-* landing page
-* audit form
-* audit results
-* public report page
+![Landing Page](./public/screenshots/home.png)
+
+---
+
+## Audit Form
+
+![Audit Results](./public/screenshots/audit_form.png)
+
+---
+
+## Results Page
+
+![Public Report](./public/screenshots/results.png)
+---
+
+## Audit Summary
+
+![Landing Page](./public/screenshots/summary.png)
+
+---
+
+## Public Report Page
+
+![Landing Page](./public/screenshots/audit_report.png)
+
+---
+
+# Key Decisions & Trade-Offs
+
+## 1. Rule-Based Audit Logic Instead of Full AI Analysis
+
+I intentionally used deterministic rule-based pricing logic for the audit calculations instead of relying fully on LLM outputs. Financial recommendations require predictable and explainable behavior.
+
+---
+
+## 2. Next.js + TypeScript Instead of Plain React
+
+I selected Next.js with TypeScript because it provides better scalability, routing, deployment support, and stronger type safety for a production-style application.
+
+---
+
+## 3. Supabase Instead of Building a Custom Backend
+
+Supabase accelerated backend development significantly while still providing a real PostgreSQL database, authentication support, and deployment-friendly APIs.
+
+---
+
+## 4. Public Shareable Reports Without Authentication
+
+I prioritized frictionless sharing and viral distribution instead of requiring user accounts. This improves usability and supports product-led growth behavior.
+
+---
+
+## 5. Local Summary Generation Instead of Browser-Based OpenAI Calls
+
+I initially experimented with direct OpenAI integration, but browser-side API usage created security and runtime issues. I replaced it with deterministic summary generation for reliability and deployment safety.
 
 ---
 
